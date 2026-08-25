@@ -6,14 +6,11 @@ export type Slide = {
   media: Media;
   title?: string;
   credits?: Credit[];
-  trailingLines?: number;
 };
 
 export type Project = {
   id: string;
   slides: Slide[];
-  leadingLines?: number;
-  trailingLines?: number;
 };
 
 const beautyEditCredits: Credit[] = [
@@ -42,38 +39,33 @@ export const galleries: Project[] = [
         media: media.beautyEditReel,
         title: BEAUTY_EDIT,
         credits: beautyEditCredits,
-        trailingLines: 1,
       },
       { media: media.beautyEditOne, title: BEAUTY_EDIT, credits: beautyEditCredits },
       {
         media: media.beautyEditTwo,
         title: BEAUTY_EDIT,
         credits: beautyEditCredits,
-        trailingLines: 4,
       },
       {
         media: media.beautyEditThree,
         title: BEAUTY_EDIT,
         credits: beautyEditCredits,
-        trailingLines: 3,
       },
     ],
   },
   {
     id: "project-001-gallery-2",
     slides: [
-      { media: media.nssOpener, title: NSS, credits: nssCredits, trailingLines: 4 },
+      { media: media.nssOpener, title: NSS, credits: nssCredits },
       {
         media: media.nssSecond,
         title: NSS,
         credits: [{ name: "PHOTOGRAPHY BY SOFIANE LAHCEN" }],
-        trailingLines: 4,
       },
     ],
   },
   {
     id: "project-001-gallery-3",
-    trailingLines: 1,
     slides: [
       { media: media.nssPlateOne },
       { media: media.nssPlateTwo, title: NSS, credits: nssCredits },
@@ -92,7 +84,6 @@ export const projects: Project[] = [
   },
   {
     id: "project-001-copy",
-    leadingLines: 5,
     slides: [{ media: media.nssWide, title: NSS, credits: nssCredits }],
   },
   {
@@ -106,7 +97,6 @@ export const projects: Project[] = [
           { name: "A quiet documentation of Summer." },
           { name: "Memories burned like sun through skin." },
         ],
-        trailingLines: 1,
       },
     ],
   },
@@ -116,7 +106,6 @@ export const projects: Project[] = [
   },
   {
     id: "project-002-copy",
-    trailingLines: 3,
     slides: [{ media: media.objectsOfDesire, title: NSS, credits: nssCredits }],
   },
 ];

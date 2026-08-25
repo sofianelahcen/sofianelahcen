@@ -38,6 +38,7 @@
 
   --fit-height: calc(100dvh - var(--pad-top) - var(--pad-bottom));
   --caption-offset: 4em;
+  --project-gap: calc(var(--pad-top) + var(--pad-bottom));
   --cursor-nav-area: max(40px, 20%);
 }
 
@@ -270,6 +271,7 @@ h1 {
 .slide-list {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   width: 100%;
   justify-items: center;
   backface-visibility: hidden;
@@ -280,7 +282,9 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   width: 100%;
+  min-width: 0;
   opacity: 0;
   visibility: hidden;
   user-select: none;
@@ -331,13 +335,16 @@ h1 {
   position: relative;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
   margin: 0;
 }
 
 .media-frame {
   position: relative;
   display: block;
-  width: min(100%, calc(var(--fit-height) * var(--aspect)));
+  flex: none;
+  width: 100%;
+  max-width: calc(var(--fit-height) * var(--aspect));
   aspect-ratio: var(--aspect);
   align-self: center;
 }
@@ -448,6 +455,10 @@ h1 {
   flex: 1 0 auto;
 }
 
+.project-gallery + .project-gallery {
+  margin-top: var(--project-gap);
+}
+
 .archive-row {
   display: block;
   width: 100%;
@@ -487,8 +498,21 @@ h1 {
     display: none;
   }
 
-  .pages > .page:first-child {
+  .pages > .page {
+    min-height: 0;
+  }
+
+  .pages > .page .page-content {
+    padding-top: calc(var(--project-gap) / 2);
+    padding-bottom: calc(var(--project-gap) / 2);
+  }
+
+  .pages > .page:first-child .page-content {
     padding-top: calc(var(--pad-top) + 2.16rem);
+  }
+
+  .pages > .page:last-child .page-content {
+    padding-bottom: var(--pad-bottom);
   }
 }
 

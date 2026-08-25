@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { MediaItem } from "./MediaItem";
-import { Lines } from "./Layout";
 import { countLabel } from "@/lib/plural";
 import type { Slide } from "@/lib/content";
 
@@ -24,7 +23,6 @@ function SlideCaption({ slide }: { slide: Slide }) {
           <br />
         </span>
       ))}
-      {slide.trailingLines ? <Lines count={slide.trailingLines} /> : null}
     </>
   );
 }
@@ -102,9 +100,11 @@ export function Slideshow({
         ) : null}
       </div>
 
-      <div className="caption slideshow-caption" aria-live="polite">
-        <SlideCaption slide={activeSlide} />
-      </div>
+      {activeSlide.title || activeSlide.credits ? (
+        <div className="caption slideshow-caption" aria-live="polite">
+          <SlideCaption slide={activeSlide} />
+        </div>
+      ) : null}
     </div>
   );
 }

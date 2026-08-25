@@ -132,22 +132,15 @@ export default function Home() {
       <main className="pages">
         <Page id="project-001">
           {galleries.map((gallery, index) => (
-            <div key={gallery.id}>
+            <div key={gallery.id} className="project-gallery">
               <Slideshow slides={gallery.slides} priority={index === 0} />
-              {gallery.trailingLines ? (
-                <Lines count={gallery.trailingLines} />
-              ) : null}
             </div>
           ))}
         </Page>
 
         {projects.map((project) => (
           <Page key={project.id} id={project.id}>
-            {project.leadingLines ? <Lines count={project.leadingLines} /> : null}
             <Slideshow slides={project.slides} />
-            {project.trailingLines ? (
-              <Lines count={project.trailingLines} />
-            ) : null}
           </Page>
         ))}
 
