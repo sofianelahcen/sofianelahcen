@@ -7,6 +7,8 @@
     "build": "next build",
     "preview": "npx serve@latest out",
     "lint": "eslint",
+    "preflight": "npm ci --dry-run && next build",
+    "relock": "rm -rf node_modules package-lock.json && npm install",
     "optimize:media": "node scripts/optimize-media.mjs"
   },
   "dependencies": {
