@@ -37,7 +37,6 @@ const NSS = "NSS PARIS NOIR PRINT ISSUE EDITORIAL";
 export const galleries: Project[] = [
   {
     id: "project-001",
-    leadingLines: 4,
     slides: [
       {
         media: media.beautyEditReel,

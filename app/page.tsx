@@ -131,7 +131,6 @@ export default function Home() {
 
       <main className="pages">
         <Page id="project-001">
-          <Lines count={4} />
           {galleries.map((gallery, index) => (
             <div key={gallery.id}>
               <Slideshow slides={gallery.slides} priority={index === 0} />
