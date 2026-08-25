@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MediaItem } from "./MediaItem";
+import { Lightbox } from "./Lightbox";
 import { countLabel } from "@/lib/plural";
 import type { Slide } from "@/lib/content";
 
@@ -35,10 +36,12 @@ export function Slideshow({
   priority?: boolean;
 }) {
   const [active, setActive] = useState(0);
+  const [expanded, setExpanded] = useState(false);
   const total = slides.length;
   const step = (delta: number) =>
     setActive((current) => (current + delta + total) % total);
   const activeSlide = slides[active];
+  const described = slides.find((slide) => slide.title || slide.credits);
 
   return (
     <div
@@ -80,8 +83,8 @@ export function Slideshow({
           })}
         </div>
 
-        {total > 1 ? (
-          <div className="slideshow-zones">
+        <div className="slideshow-zones">
+          {total > 1 ? (
             <button
               type="button"
               className="zone zone-prev"
@@ -89,6 +92,15 @@ export function Slideshow({
             >
               <span className="sr-only">Previous image</span>
             </button>
+          ) : null}
+          <button
+            type="button"
+            className="zone zone-open"
+            onClick={() => setExpanded(true)}
+          >
+            <span className="sr-only">{`Open ${countLabel(total, "image")} full screen`}</span>
+          </button>
+          {total > 1 ? (
             <button
               type="button"
               className="zone zone-next"
@@ -96,14 +108,24 @@ export function Slideshow({
             >
               <span className="sr-only">Next image</span>
             </button>
-          </div>
-        ) : null}
+          ) : null}
+        </div>
       </div>
 
       {activeSlide.title || activeSlide.credits ? (
         <div className="caption slideshow-caption" aria-live="polite">
           <SlideCaption slide={activeSlide} />
         </div>
+      ) : null}
+
+      {expanded ? (
+        <Lightbox
+          title={described?.title ?? ""}
+          credits={described?.credits ?? []}
+          items={slides.map((slide) => slide.media)}
+          startIndex={active}
+          onClose={() => setExpanded(false)}
+        />
       ) : null}
     </div>
   );

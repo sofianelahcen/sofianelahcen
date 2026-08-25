@@ -38,7 +38,7 @@
 
   --fit-height: calc(100dvh - var(--pad-top) - var(--pad-bottom));
   --caption-offset: 4em;
-  --project-gap: calc(var(--pad-top) + var(--pad-bottom));
+  --project-gap: calc((var(--pad-top) + var(--pad-bottom)) * 1.8);
   --cursor-nav-area: max(40px, 20%);
 }
 
@@ -324,6 +324,11 @@ h1 {
   grid-column: 1;
 }
 
+.zone-open {
+  cursor: zoom-in;
+  grid-column: 2;
+}
+
 .zone-next {
   cursor: e-resize;
   grid-column: 3;
@@ -350,6 +355,8 @@ h1 {
 }
 
 .media-fill {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;
@@ -459,6 +466,19 @@ h1 {
   margin-top: var(--project-gap);
 }
 
+.pages > .page .page-content {
+  padding-top: calc(var(--project-gap) / 2);
+  padding-bottom: calc(var(--project-gap) / 2);
+}
+
+.pages > .page:first-child .page-content {
+  padding-top: var(--pad-top);
+}
+
+.pages > .page:last-child .page-content {
+  padding-bottom: var(--pad-bottom);
+}
+
 .archive-row {
   display: block;
   width: 100%;
@@ -502,17 +522,8 @@ h1 {
     min-height: 0;
   }
 
-  .pages > .page .page-content {
-    padding-top: calc(var(--project-gap) / 2);
-    padding-bottom: calc(var(--project-gap) / 2);
-  }
-
   .pages > .page:first-child .page-content {
     padding-top: calc(var(--pad-top) + 2.16rem);
-  }
-
-  .pages > .page:last-child .page-content {
-    padding-bottom: var(--pad-bottom);
   }
 }
 
@@ -532,9 +543,9 @@ h1 {
 }
 
 .lightbox::backdrop {
-  background-color: rgba(255, 255, 255, 0.84);
-  backdrop-filter: blur(30px) saturate(1.08);
-  -webkit-backdrop-filter: blur(30px) saturate(1.08);
+  background-color: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(34px) saturate(1.08);
+  -webkit-backdrop-filter: blur(34px) saturate(1.08);
 }
 
 html:has(dialog[open]) {
@@ -603,9 +614,11 @@ html:has(dialog[open]) {
 .lightbox-figure {
   position: relative;
   display: block;
-  margin: 0;
-  width: 100%;
+  margin: 0 auto;
   height: 100%;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: var(--aspect);
   animation: lightbox-fade 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -613,12 +626,20 @@ html:has(dialog[open]) {
   object-fit: contain;
 }
 
-.lightbox-zones {
+.lightbox-zone {
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  width: 32%;
   z-index: 2;
-  display: grid;
-  grid-template-columns: var(--cursor-nav-area) 1fr var(--cursor-nav-area);
+}
+
+.lightbox-zone.zone-prev {
+  left: 0;
+}
+
+.lightbox-zone.zone-next {
+  right: 0;
 }
 
 .lightbox-foot {
@@ -728,7 +749,8 @@ html:has(dialog[open]) {
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .media-item {
+    .media-item,
+    .archive-tile {
       animation: conveyor linear both;
       animation-timeline: view();
       transform-origin: center center;

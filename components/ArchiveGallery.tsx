@@ -65,7 +65,10 @@ export function ArchiveGallery({ projects }: { projects: ArchiveProject[] }) {
       {openProject ? (
         <Lightbox
           key={openProject.id}
-          project={openProject}
+          title={openProject.title}
+          year={openProject.year}
+          credits={openProject.credits}
+          items={openProject.items}
           onClose={() => setOpenId(null)}
         />
       ) : null}

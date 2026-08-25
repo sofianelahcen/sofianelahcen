@@ -3,21 +3,31 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useMountEffect } from "@/hooks/useMountEffect";
-import type { ArchiveProject } from "@/lib/content";
+import { aspectOf, type Media } from "@/lib/media";
+import type { Credit } from "@/lib/content";
+import type { CSSProperties } from "react";
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
 export function Lightbox({
-  project,
+  title,
+  year,
+  credits,
+  items,
+  startIndex = 0,
   onClose,
 }: {
-  project: ArchiveProject;
+  title: string;
+  year?: string;
+  credits: Credit[];
+  items: readonly Media[];
+  startIndex?: number;
   onClose: () => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [index, setIndex] = useState(0);
-  const total = project.items.length;
-  const item = project.items[index];
+  const [index, setIndex] = useState(startIndex);
+  const total = items.length;
+  const item = items[index];
 
   useMountEffect(() => {
     dialogRef.current?.showModal();
@@ -30,7 +40,7 @@ export function Lightbox({
     <dialog
       ref={dialogRef}
       className="lightbox"
-      aria-label={project.title}
+      aria-label={title}
       onClose={onClose}
       onClick={(event) => {
         if (event.target === dialogRef.current) dialogRef.current?.close();
@@ -48,8 +58,8 @@ export function Lightbox({
       >
         <header className="lightbox-head">
           <h1 className="lightbox-title">
-            {project.title}
-            <span className="lightbox-year">{project.year}</span>
+            {title}
+            {year ? <span className="lightbox-year">{year}</span> : null}
           </h1>
           <button
             type="button"
@@ -60,8 +70,17 @@ export function Lightbox({
           </button>
         </header>
 
-        <div className="lightbox-stage">
-          <figure key={item.src} className="lightbox-figure">
+        <div
+          className="lightbox-stage"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) dialogRef.current?.close();
+          }}
+        >
+          <figure
+            key={item.src}
+            className="lightbox-figure"
+            style={{ "--aspect": aspectOf(item) } as CSSProperties}
+          >
             {item.kind === "video" ? (
               <video
                 className="media-fill"
@@ -83,31 +102,31 @@ export function Lightbox({
                 priority
               />
             )}
-          </figure>
 
-          {total > 1 ? (
-            <div className="lightbox-zones">
-              <button
-                type="button"
-                className="zone zone-prev"
-                onClick={() => step(-1)}
-              >
-                <span className="sr-only">Previous image</span>
-              </button>
-              <button
-                type="button"
-                className="zone zone-next"
-                onClick={() => step(1)}
-              >
-                <span className="sr-only">Next image</span>
-              </button>
-            </div>
-          ) : null}
+            {total > 1 ? (
+              <>
+                <button
+                  type="button"
+                  className="zone zone-prev lightbox-zone"
+                  onClick={() => step(-1)}
+                >
+                  <span className="sr-only">Previous image</span>
+                </button>
+                <button
+                  type="button"
+                  className="zone zone-next lightbox-zone"
+                  onClick={() => step(1)}
+                >
+                  <span className="sr-only">Next image</span>
+                </button>
+              </>
+            ) : null}
+          </figure>
         </div>
 
         <footer className="lightbox-foot caption">
           <p className="lightbox-credits">
-            {project.credits.map((credit) => (
+            {credits.map((credit) => (
               <span key={credit.name}>
                 {credit.name}
                 <br />

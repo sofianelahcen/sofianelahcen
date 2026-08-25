@@ -67,12 +67,12 @@ export const galleries: Project[] = [
   {
     id: "project-001-gallery-3",
     slides: [
-      { media: media.nssPlateOne },
+      { media: media.nssPlateOne, title: NSS, credits: nssCredits },
       { media: media.nssPlateTwo, title: NSS, credits: nssCredits },
       { media: media.nssPlateThree, title: NSS, credits: nssCredits },
       { media: media.nssPlateFour, title: NSS, credits: nssCredits },
-      { media: media.nssPlateFive },
-      { media: media.nssPlateSix },
+      { media: media.nssPlateFive, title: NSS, credits: nssCredits },
+      { media: media.nssPlateSix, title: NSS, credits: nssCredits },
     ],
   },
 ];
