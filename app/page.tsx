@@ -70,7 +70,7 @@ function BottomNav() {
         </ColumnUnit>
         <ColumnUnit>
           <div style={{ textAlign: "right" }}>
-            <h1 style={{ color: "var(--color-accent)" }}>
+            <h1>
               <a href="#archive">{nav.archive}</a>
             </h1>
           </div>
