@@ -88,19 +88,14 @@ function Profile() {
         <ColumnUnit />
         <ColumnUnit>
           <span className="caption">
-            {profile.name}
-            <br />
-            {profile.role}
-            <br />
-            <br />
             {profile.statement}
             <br />
             <br />
             <br />
-            <a href={`mailto:${profile.email}`}>{profile.email}</a>
+            <a href={`mailto:${profile.email}`}>CONTACT</a>
             <br />
             <a href={profile.instagram} target="_blank" rel="noreferrer">
-              instagram
+              INSTAGRAM
             </a>
           </span>
           <Lines count={3} />
