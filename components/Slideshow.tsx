@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { MediaItem } from "./MediaItem";
-import { Lightbox } from "./Lightbox";
 import { countLabel } from "@/lib/plural";
+import { aspectOf } from "@/lib/media";
 import type { Slide } from "@/lib/content";
+import type { CSSProperties } from "react";
+
+const SWIPE_THRESHOLD = 40;
 
 function SlideCaption({ slide }: { slide: Slide }) {
-  if (!slide.title && !slide.credits) return null;
-
   return (
     <>
       {slide.title ? (
@@ -36,12 +37,22 @@ export function Slideshow({
   priority?: boolean;
 }) {
   const [active, setActive] = useState(0);
-  const [expanded, setExpanded] = useState(false);
   const total = slides.length;
   const step = (delta: number) =>
     setActive((current) => (current + delta + total) % total);
   const activeSlide = slides[active];
-  const described = slides.find((slide) => slide.title || slide.credits);
+  const caption = slides.find((slide) => slide.title || slide.credits);
+
+  const swipeOrigin = useRef<number | null>(null);
+  const didSwipe = useRef(false);
+
+  const guardedStep = (delta: number) => {
+    if (didSwipe.current) {
+      didSwipe.current = false;
+      return;
+    }
+    step(delta);
+  };
 
   return (
     <div
@@ -54,7 +65,25 @@ export function Slideshow({
         if (event.key === "ArrowRight") step(1);
       }}
     >
-      <div className="slideshow-stage">
+      <div
+        className="slideshow-stage"
+        style={
+          { "--active-aspect": aspectOf(activeSlide.media) } as CSSProperties
+        }
+        onTouchStart={(event) => {
+          swipeOrigin.current = event.touches[0].clientX;
+          didSwipe.current = false;
+        }}
+        onTouchEnd={(event) => {
+          const origin = swipeOrigin.current;
+          swipeOrigin.current = null;
+          if (origin === null || total < 2) return;
+          const travelled = event.changedTouches[0].clientX - origin;
+          if (Math.abs(travelled) < SWIPE_THRESHOLD) return;
+          didSwipe.current = true;
+          step(travelled < 0 ? 1 : -1);
+        }}
+      >
         <div className="slide-list">
           {slides.map((slide, index) => {
             const isActive = index === active;
@@ -83,49 +112,30 @@ export function Slideshow({
           })}
         </div>
 
-        <div className="slideshow-zones">
-          {total > 1 ? (
+        {total > 1 ? (
+          <div className="slideshow-zones">
             <button
               type="button"
               className="zone zone-prev"
-              onClick={() => step(-1)}
+              onClick={() => guardedStep(-1)}
             >
               <span className="sr-only">Previous image</span>
             </button>
-          ) : null}
-          <button
-            type="button"
-            className="zone zone-open"
-            onClick={() => setExpanded(true)}
-          >
-            <span className="sr-only">{`Open ${countLabel(total, "image")} full screen`}</span>
-          </button>
-          {total > 1 ? (
             <button
               type="button"
               className="zone zone-next"
-              onClick={() => step(1)}
+              onClick={() => guardedStep(1)}
             >
               <span className="sr-only">Next image</span>
             </button>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </div>
 
-      {activeSlide.title || activeSlide.credits ? (
-        <div className="caption slideshow-caption" aria-live="polite">
-          <SlideCaption slide={activeSlide} />
+      {caption ? (
+        <div className="caption slideshow-caption">
+          <SlideCaption slide={caption} />
         </div>
-      ) : null}
-
-      {expanded ? (
-        <Lightbox
-          title={described?.title ?? ""}
-          credits={described?.credits ?? []}
-          items={slides.map((slide) => slide.media)}
-          startIndex={active}
-          onClose={() => setExpanded(false)}
-        />
       ) : null}
     </div>
   );

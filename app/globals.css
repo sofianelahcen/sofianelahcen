@@ -39,7 +39,6 @@
   --fit-height: calc(100dvh - var(--pad-top) - var(--pad-bottom));
   --caption-offset: 4em;
   --project-gap: calc((var(--pad-top) + var(--pad-bottom)) * 1.8);
-  --cursor-nav-area: max(40px, 20%);
 }
 
 @supports (width: calc(tan(atan2(1px, 1px)) * 1px)) {
@@ -261,6 +260,7 @@ h1 {
 .slideshow-stage {
   position: relative;
   width: 100%;
+  touch-action: pan-y;
 }
 
 .slideshow-caption {
@@ -306,10 +306,14 @@ h1 {
 
 .slideshow-zones {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: min(100%, calc(var(--fit-height) * var(--active-aspect)));
+  aspect-ratio: var(--active-aspect);
   z-index: 3;
   display: grid;
-  grid-template-columns: var(--cursor-nav-area) 1fr var(--cursor-nav-area);
+  grid-template-columns: 1fr 1fr;
 }
 
 .zone {
@@ -324,14 +328,9 @@ h1 {
   grid-column: 1;
 }
 
-.zone-open {
-  cursor: zoom-in;
-  grid-column: 2;
-}
-
 .zone-next {
   cursor: e-resize;
-  grid-column: 3;
+  grid-column: 2;
 }
 
 .media-item {
@@ -749,8 +748,7 @@ html:has(dialog[open]) {
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .media-item,
-    .archive-tile {
+    .media-item {
       animation: conveyor linear both;
       animation-timeline: view();
       transform-origin: center center;
