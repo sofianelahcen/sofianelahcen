@@ -49,15 +49,13 @@ export const project = defineType({
     select: {
       title: "title",
       year: "year",
+      credit: "credits.0",
       media: "media.0.image",
       poster: "media.0.poster",
-      count: "media",
     },
-    prepare: ({ title, year, media, poster, count }) => ({
+    prepare: ({ title, year, credit, media, poster }) => ({
       title,
-      subtitle: [year, `${Array.isArray(count) ? count.length : 0} items`]
-        .filter(Boolean)
-        .join(" · "),
+      subtitle: [year, credit].filter(Boolean).join(" · "),
       media: media || poster,
     }),
   },
@@ -88,15 +86,13 @@ export const archiveProject = defineType({
     select: {
       title: "title",
       year: "year",
+      credit: "credits.0",
       media: "media.0.image",
       poster: "media.0.poster",
-      count: "media",
     },
-    prepare: ({ title, year, media, poster, count }) => ({
+    prepare: ({ title, year, credit, media, poster }) => ({
       title,
-      subtitle: [year, `${Array.isArray(count) ? count.length : 0} items`]
-        .filter(Boolean)
-        .join(" · "),
+      subtitle: [year, credit].filter(Boolean).join(" · "),
       media: media || poster,
     }),
   },
