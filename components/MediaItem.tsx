@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { aspectOf, type Media } from "@/lib/media";
+import { useVideoAspect, VideoFill } from "./VideoFill";
 
 type MediaItemProps = {
   media: Media;
@@ -17,24 +20,17 @@ export function MediaItem({
   zoomable = false,
   sizes = "(max-width: 900px) 100vw, 70vw",
 }: MediaItemProps) {
+  const video = useVideoAspect(media);
+  const aspect = media.kind === "video" ? video.aspect : aspectOf(media);
+
   return (
     <figure
       className={zoomable ? "media-item media-zoomable" : "media-item"}
-      style={{ "--aspect": aspectOf(media) } as CSSProperties}
+      style={{ "--aspect": aspect } as CSSProperties}
     >
       <div className="media-frame">
         {media.kind === "video" ? (
-          <video
-            className="media-fill"
-            src={media.src}
-            poster={media.poster}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            aria-label={media.alt}
-          />
+          <VideoFill media={media} onLoadedMetadata={video.onLoadedMetadata} />
         ) : (
           <Image
             className="media-fill"

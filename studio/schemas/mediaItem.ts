@@ -43,23 +43,8 @@ export const videoItem = defineType({
       title: "Poster frame",
       type: "image",
       description:
-        "Shown while the video loads. Optional, but avoids a blank frame.",
-    }),
-    defineField({
-      name: "aspectWidth",
-      title: "Width",
-      type: "number",
-      description: "Pixel width of the video, used to reserve space on load.",
-      initialValue: 1080,
-      validation: (rule) => rule.required().positive(),
-    }),
-    defineField({
-      name: "aspectHeight",
-      title: "Height",
-      type: "number",
-      description: "Pixel height of the video, used to reserve space on load.",
-      initialValue: 1920,
-      validation: (rule) => rule.required().positive(),
+        "Shown while the video loads. Recommended: it avoids a blank frame, " +
+        "and its shape is used to reserve the right space before the video arrives.",
     }),
     defineField({
       name: "alt",

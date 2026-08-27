@@ -13,8 +13,8 @@ const MEDIA = `
       alt,
       "url": file.asset->url,
       "posterUrl": poster.asset->url,
-      "width": aspectWidth,
-      "height": aspectHeight
+      "width": coalesce(poster.asset->metadata.dimensions.width, 16),
+      "height": coalesce(poster.asset->metadata.dimensions.height, 9)
     }
   }
 `;

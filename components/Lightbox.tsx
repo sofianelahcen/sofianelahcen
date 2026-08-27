@@ -4,10 +4,64 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { useMountEffect } from "@/hooks/useMountEffect";
 import { aspectOf, type Media } from "@/lib/media";
+import { useVideoAspect, VideoFill } from "./VideoFill";
 import type { Credit } from "@/lib/content";
 import type { CSSProperties } from "react";
 
 const pad = (value: number) => String(value).padStart(2, "0");
+
+
+function LightboxFigure({
+  item,
+  showZones,
+  onStep,
+}: {
+  item: Media;
+  showZones: boolean;
+  onStep: (delta: number) => void;
+}) {
+  const video = useVideoAspect(item);
+  const aspect = item.kind === "video" ? video.aspect : aspectOf(item);
+
+  return (
+    <figure
+      className="lightbox-figure"
+      style={{ "--aspect": aspect } as CSSProperties}
+    >
+      {item.kind === "video" ? (
+        <VideoFill media={item} onLoadedMetadata={video.onLoadedMetadata} />
+      ) : (
+        <Image
+          className="media-fill"
+          src={item.src}
+          alt={item.alt}
+          fill
+          sizes="90vw"
+          priority
+        />
+      )}
+
+      {showZones ? (
+        <>
+          <button
+            type="button"
+            className="zone zone-prev lightbox-zone"
+            onClick={() => onStep(-1)}
+          >
+            <span className="sr-only">Previous image</span>
+          </button>
+          <button
+            type="button"
+            className="zone zone-next lightbox-zone"
+            onClick={() => onStep(1)}
+          >
+            <span className="sr-only">Next image</span>
+          </button>
+        </>
+      ) : null}
+    </figure>
+  );
+}
 
 export function Lightbox({
   title,
@@ -76,52 +130,12 @@ export function Lightbox({
             if (event.target === event.currentTarget) dialogRef.current?.close();
           }}
         >
-          <figure
+          <LightboxFigure
             key={item.src}
-            className="lightbox-figure"
-            style={{ "--aspect": aspectOf(item) } as CSSProperties}
-          >
-            {item.kind === "video" ? (
-              <video
-                className="media-fill"
-                src={item.src}
-                poster={item.poster}
-                autoPlay
-                loop
-                muted
-                playsInline
-                aria-label={item.alt}
-              />
-            ) : (
-              <Image
-                className="media-fill"
-                src={item.src}
-                alt={item.alt}
-                fill
-                sizes="90vw"
-                priority
-              />
-            )}
-
-            {total > 1 ? (
-              <>
-                <button
-                  type="button"
-                  className="zone zone-prev lightbox-zone"
-                  onClick={() => step(-1)}
-                >
-                  <span className="sr-only">Previous image</span>
-                </button>
-                <button
-                  type="button"
-                  className="zone zone-next lightbox-zone"
-                  onClick={() => step(1)}
-                >
-                  <span className="sr-only">Next image</span>
-                </button>
-              </>
-            ) : null}
-          </figure>
+            item={item}
+            showZones={total > 1}
+            onStep={step}
+          />
         </div>
 
         <footer className="lightbox-foot caption">
