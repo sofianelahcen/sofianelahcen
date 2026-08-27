@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -43,5 +44,13 @@ next-env.d.ts
 # cloudflare
 .wrangler/
 
-# media masters (inputs to `npm run optimize:media`; optimized output in public/media is committed)
+
+# sanity
+/studio/node_modules/
+/studio/dist/
+
+# local media masters (Sanity is the source of truth)
 /assets/media-src/
+
+# sanity studio build artifacts
+/studio/.sanity/

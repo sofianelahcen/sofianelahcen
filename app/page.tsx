@@ -1,15 +1,12 @@
 import { ColumnSet, ColumnUnit, Lines, Page } from "@/components/Layout";
 import { ArchiveGallery } from "@/components/ArchiveGallery";
 import { Slideshow } from "@/components/Slideshow";
-import {
-  archiveProjects,
-  galleries,
-  nav,
-  profile,
-  projects,
-} from "@/lib/content";
+import { getSiteContent, type SiteContent } from "@/lib/site-data";
 
-function TopNav() {
+type Nav = SiteContent["nav"];
+type Profile = SiteContent["profile"];
+
+function TopNav({ nav }: { nav: Nav }) {
   return (
     <Page id="top-nav" pinned="top" zIndex={399} className="nav-desktop">
       <ColumnSet columns="1fr 1fr" gutter="2rem" stackOnMobile={false}>
@@ -28,7 +25,7 @@ function TopNav() {
   );
 }
 
-function TopNavMobile() {
+function TopNavMobile({ nav }: { nav: Nav }) {
   return (
     <Page id="top-nav-mobile" pinned="top" zIndex={390} className="nav-mobile">
       <ColumnSet columns="9fr 3fr" gutter="2rem" stackOnMobile={false}>
@@ -45,7 +42,7 @@ function TopNavMobile() {
   );
 }
 
-function MiddleNav() {
+function MiddleNav({ nav }: { nav: Nav }) {
   return (
     <Page id="middle-nav" pinned="top" zIndex={398} className="nav-desktop">
       <ColumnSet columns="1fr 1fr" gutter="2rem" stackOnMobile={false}>
@@ -59,7 +56,7 @@ function MiddleNav() {
   );
 }
 
-function BottomNav() {
+function BottomNav({ nav }: { nav: Nav }) {
   return (
     <Page id="bottom-nav" pinned="bottom" zIndex={391}>
       <ColumnSet columns="1fr 1fr" gutter="2rem" stackOnMobile={false}>
@@ -80,7 +77,7 @@ function BottomNav() {
   );
 }
 
-function Profile() {
+function Profile({ profile }: { profile: Profile }) {
   return (
     <Page id="profile">
       <Lines count={29} />
@@ -107,43 +104,32 @@ function Profile() {
   );
 }
 
-function Archive() {
-  return (
-    <Page id="archive">
-      <Lines count={1} />
-      <ArchiveGallery projects={archiveProjects} />
-      <Lines count={13} />
-    </Page>
-  );
-}
+export default async function Home() {
+  const { nav, profile, works, archive } = await getSiteContent();
 
-export default function Home() {
   return (
     <div className="stack">
-      <TopNav />
-      <TopNavMobile />
-      <MiddleNav />
+      <TopNav nav={nav} />
+      <TopNavMobile nav={nav} />
+      <MiddleNav nav={nav} />
 
       <main className="pages">
-        <Page id="project-001">
-          {galleries.map((gallery, index) => (
-            <div key={gallery.id} className="project-gallery">
-              <Slideshow slides={gallery.slides} priority={index === 0} />
-            </div>
-          ))}
-        </Page>
-
-        {projects.map((project) => (
-          <Page key={project.id} id={project.id}>
-            <Slideshow slides={project.slides} />
+        {works.map((work, index) => (
+          <Page key={work.id} id={work.id}>
+            <Slideshow slides={work.slides} priority={index === 0} />
           </Page>
         ))}
 
-        <Profile />
-        <Archive />
+        <Profile profile={profile} />
+
+        <Page id="archive">
+          <Lines count={1} />
+          <ArchiveGallery projects={archive} />
+          <Lines count={13} />
+        </Page>
       </main>
 
-      <BottomNav />
+      <BottomNav nav={nav} />
     </div>
   );
 }

@@ -14,7 +14,7 @@ export function ArchiveGallery({ projects }: { projects: ArchiveProject[] }) {
     <>
       <ul className="archive-grid">
         {projects.map((project) => {
-          const cover = project.items[0];
+          const cover = project.cover;
 
           return (
             <li key={project.id} className="archive-cell">
