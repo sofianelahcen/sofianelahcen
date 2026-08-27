@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useMountEffect } from "@/hooks/useMountEffect";
 import type { Media } from "@/lib/media";
 
@@ -30,6 +30,27 @@ export function VideoFill({
   ariaHidden?: boolean;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const wantsPlay = useRef(false);
+  const playing = useRef(false);
+
+  const sync = useCallback(() => {
+    const video = ref.current;
+    if (!video) return;
+
+    if (wantsPlay.current) {
+      if (playing.current || !video.paused) return;
+      playing.current = true;
+      void video
+        .play()
+        .catch(() => {})
+        .finally(() => {
+          playing.current = false;
+        });
+      return;
+    }
+
+    if (!video.paused) video.pause();
+  }, []);
 
   useMountEffect(() => {
     if (withSound) return;
@@ -38,17 +59,22 @@ export function VideoFill({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          void video.play().catch(() => {});
-        } else if (!video.paused) {
-          video.pause();
-        }
+        wantsPlay.current = entry.isIntersecting;
+        sync();
       },
       { rootMargin: "150px", threshold: 0.05 },
     );
-
     observer.observe(video);
-    return () => observer.disconnect();
+
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") sync();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   });
 
   return (
@@ -66,16 +92,22 @@ export function VideoFill({
       aria-hidden={ariaHidden || undefined}
       aria-label={ariaHidden ? undefined : media.alt}
       onLoadedMetadata={onLoadedMetadata}
-      onCanPlay={(event) => {
-        if (!withSound) return;
-        const video = event.currentTarget;
-        video.muted = false;
-        video.volume = 1;
-        void video.play().catch(() => {
-          video.muted = true;
-          void video.play().catch(() => {});
-        });
-      }}
+      onLoadedData={withSound ? undefined : sync}
+      onCanPlay={
+        withSound
+          ? (event) => {
+              const video = event.currentTarget;
+              video.muted = false;
+              video.volume = 1;
+              void video.play().catch(() => {
+                video.muted = true;
+                void video.play().catch(() => {});
+              });
+            }
+          : sync
+      }
+      onStalled={withSound ? undefined : sync}
+      onSuspend={withSound ? undefined : sync}
     />
   );
 }
