@@ -113,7 +113,13 @@ export function Slideshow({
         </div>
 
         {total > 1 ? (
-          <div className="slideshow-zones">
+          <div
+            className={
+              activeSlide.media.kind === "video"
+                ? "slideshow-zones has-controls"
+                : "slideshow-zones"
+            }
+          >
             <button
               type="button"
               className="zone zone-prev"

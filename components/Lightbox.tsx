@@ -25,11 +25,17 @@ function LightboxFigure({
 
   return (
     <figure
-      className="lightbox-figure"
+      className={
+        item.kind === "video" ? "lightbox-figure has-controls" : "lightbox-figure"
+      }
       style={{ "--aspect": aspect } as CSSProperties}
     >
       {item.kind === "video" ? (
-        <VideoFill media={item} onLoadedMetadata={video.onLoadedMetadata} />
+        <VideoFill
+          media={item}
+          onLoadedMetadata={video.onLoadedMetadata}
+          withSound
+        />
       ) : (
         <Image
           className="media-fill"

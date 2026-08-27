@@ -6,9 +6,7 @@ import type { Media } from "@/lib/media";
 export function useVideoAspect(media: Media) {
   const [measured, setMeasured] = useState<number | null>(null);
 
-  const onLoadedMetadata = (
-    event: React.SyntheticEvent<HTMLVideoElement>,
-  ) => {
+  const onLoadedMetadata = (event: React.SyntheticEvent<HTMLVideoElement>) => {
     const { videoWidth, videoHeight } = event.currentTarget;
     if (videoWidth > 0 && videoHeight > 0) setMeasured(videoWidth / videoHeight);
   };
@@ -22,9 +20,11 @@ export function useVideoAspect(media: Media) {
 export function VideoFill({
   media,
   onLoadedMetadata,
+  withSound = false,
 }: {
   media: Media;
   onLoadedMetadata: (event: React.SyntheticEvent<HTMLVideoElement>) => void;
+  withSound?: boolean;
 }) {
   return (
     <video
@@ -33,11 +33,21 @@ export function VideoFill({
       poster={media.poster}
       autoPlay
       loop
-      muted
+      controls
+      muted={!withSound}
       playsInline
-      preload="metadata"
       aria-label={media.alt}
       onLoadedMetadata={onLoadedMetadata}
+      onCanPlay={(event) => {
+        if (!withSound) return;
+        const video = event.currentTarget;
+        video.muted = false;
+        video.volume = 1;
+        void video.play().catch(() => {
+          video.muted = true;
+          void video.play().catch(() => {});
+        });
+      }}
     />
   );
 }
