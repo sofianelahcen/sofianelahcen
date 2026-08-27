@@ -314,10 +314,6 @@ h1 {
     grid-template-columns: 1fr 1fr;
 }
 
-.slideshow-zones.has-controls {
-    padding-bottom: 60px;
-}
-
 .lightbox-figure.has-controls .lightbox-zone {
     bottom: 60px;
 }

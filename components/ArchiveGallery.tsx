@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Lightbox } from "./Lightbox";
+import { VideoFill } from "./VideoFill";
 import { countLabel } from "@/lib/plural";
 import type { ArchiveProject } from "@/lib/content";
 
@@ -26,17 +27,7 @@ export function ArchiveGallery({ projects }: { projects: ArchiveProject[] }) {
               >
                 <span className="archive-frame">
                   {cover.kind === "video" ? (
-                    <video
-                      className="media-fill"
-                      src={cover.src}
-                      poster={cover.poster}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      aria-hidden
-                    />
+                    <VideoFill media={cover} ariaHidden />
                   ) : (
                     <Image
                       className="media-fill"
