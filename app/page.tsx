@@ -80,26 +80,19 @@ function BottomNav({ nav }: { nav: Nav }) {
 function Profile({ profile }: { profile: Profile }) {
   return (
     <Page id="profile">
-      <Lines count={29} />
-      <ColumnSet columns="2fr 1fr 1fr" gutter="1rem">
-        <ColumnUnit />
-        <ColumnUnit>
-          <span className="caption">
-            {profile.statement}
-            <br />
-            <br />
-            <br />
-            <a href={`mailto:${profile.email}`}>CONTACT</a>
-            <br />
-            <a href={profile.instagram} target="_blank" rel="noreferrer">
-              INSTAGRAM
-            </a>
-          </span>
-          <Lines count={3} />
-        </ColumnUnit>
-        <ColumnUnit />
-      </ColumnSet>
-      <Lines count={6} />
+      <div className="profile-center">
+        <span className="caption profile-text">
+          {profile.statement}
+          <br />
+          <br />
+          <br />
+          <a href={`mailto:${profile.email}`}>CONTACT</a>
+          <br />
+          <a href={profile.instagram} target="_blank" rel="noreferrer">
+            INSTAGRAM
+          </a>
+        </span>
+      </div>
     </Page>
   );
 }
@@ -123,7 +116,7 @@ export default async function Home() {
         <Profile profile={profile} />
 
         <Page id="archive">
-          <Lines count={1} />
+          <h1 className="archive-heading">{nav.archive}</h1>
           <ArchiveGallery projects={archive} />
           <Lines count={13} />
         </Page>

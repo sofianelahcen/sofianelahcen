@@ -40,12 +40,7 @@ export function ArchiveGallery({ projects }: { projects: ArchiveProject[] }) {
                 </span>
                 <span className="caption archive-label">
                   <span className="archive-name">{project.title}</span>
-                  <span className="archive-meta">
-                    {project.year}
-                    <span className="archive-count">
-                      {project.items.length}
-                    </span>
-                  </span>
+                  <span className="archive-meta">{project.year}</span>
                 </span>
               </button>
             </li>
