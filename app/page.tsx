@@ -48,7 +48,9 @@ function MiddleNav({ nav }: { nav: Nav }) {
       <ColumnSet columns="1fr 1fr" gutter="2rem" stackOnMobile={false}>
         <ColumnUnit>
           <Lines count={5} />
-          <h1 style={{ lineHeight: 1.7 }}>{nav.section}</h1>
+          <h1 style={{ lineHeight: 1.7 }}>
+            <a href="#project-001">{nav.section}</a>
+          </h1>
         </ColumnUnit>
         <ColumnUnit />
       </ColumnSet>

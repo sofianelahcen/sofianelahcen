@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "reference/**",
     "studio/**",
+    "temp/**",
   ]),
   {
     files: ["hooks/useMountEffect.ts"],

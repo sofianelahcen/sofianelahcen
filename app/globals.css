@@ -785,6 +785,10 @@ html:has(dialog[open]) {
     }
 }
 
+#archive {
+    scroll-margin-top: calc(var(--section-title-top) - var(--project-gap) / 2);
+}
+
 .archive-heading {
     position: sticky;
     top: var(--section-title-top);
