@@ -54,3 +54,6 @@ next-env.d.ts
 
 # sanity studio build artifacts
 /studio/.sanity/
+
+# singlefile capture of the live holding page (source for temp-site/)
+/temp/

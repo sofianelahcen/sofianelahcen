@@ -1,0 +1,197 @@
+@font-face {
+  font-family: "A T Sackers Gothic";
+  src: url("assets/fonts/Sackers-Gothic-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Monument Grotesk Mono Variable";
+  src: url("assets/fonts/MonumentGroteskPlusVariable.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ink-1: rgba(0, 0, 0, 0.85);
+  --ink-2: rgba(0, 0, 0, 0.75);
+  --ink-4: rgba(0, 0, 0, 0.4);
+  --accent: rgba(203, 13, 13, 0.75);
+  --paper: #ffffff;
+
+  --font-display: "A T Sackers Gothic", ui-sans-serif, system-ui, sans-serif;
+  --font-caption: "Monument Grotesk Mono Variable", ui-monospace,
+    "SFMono-Regular", monospace;
+
+  --viewport-ratio: 1;
+  --portrait-bias: 0;
+  --weight-base: 9;
+  --weight-range: 5;
+  --weight: calc(var(--weight-base) + var(--weight-range) * var(--portrait-bias));
+  --base-unit: max(20px, calc(min(100vw, 100vh) * var(--weight) / 100));
+  --base-size: calc(var(--base-unit) * 0.16);
+
+  --mobile-scale: 1;
+  --mobile-padding-offset: 1;
+
+  --font-size: 0.9rem;
+  --leading: 1.2;
+  --pad: calc(2.3rem * var(--mobile-padding-offset));
+  --gutter: calc(1rem * var(--mobile-padding-offset));
+}
+
+@supports (width: calc(tan(atan2(1px, 1px)) * 1px)) {
+  :root {
+    --viewport-ratio: tan(atan2(100vh, 100vw));
+    --portrait-bias: clamp(0, calc((var(--viewport-ratio) - 1) / 0.777777778), 1);
+  }
+}
+
+@media (max-aspect-ratio: 4 / 5) {
+  :root {
+    --mobile-scale: 1.01;
+    --mobile-padding-offset: 0.95;
+  }
+}
+
+@media (min-aspect-ratio: 2 / 3) and (max-height: 500px) {
+  :root {
+    --mobile-scale: 1.01;
+    --mobile-padding-offset: 0.95;
+    --weight-base: 18;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(var(--base-size) * var(--mobile-scale));
+  touch-action: manipulation;
+  -webkit-text-size-adjust: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-4) transparent;
+  caret-color: var(--accent);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--paper);
+  color: var(--ink-1);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(var(--font-size));
+  line-height: var(--leading);
+  letter-spacing: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: rgba(203, 13, 13, 0.16);
+  color: var(--ink-1);
+}
+
+:focus {
+  outline: 0;
+}
+
+:focus-visible {
+  outline: 1px solid var(--ink-4);
+  outline-offset: 2px;
+}
+
+.page {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 100dvh;
+}
+
+.page-content {
+  width: 100%;
+  padding: var(--pad);
+  text-align: left;
+}
+
+.bodycopy {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+.rule-break {
+  display: block;
+  height: calc(var(--font-size) * var(--leading));
+}
+
+.column-set {
+  display: grid;
+  grid-template-columns: 4fr 5.03fr 2.97fr;
+  column-gap: var(--gutter);
+  width: 100%;
+  align-items: start;
+}
+
+.column-unit {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(var(--font-size));
+  line-height: var(--leading);
+  letter-spacing: 0;
+  color: var(--ink-2);
+  text-transform: uppercase;
+}
+
+.caption {
+  display: block;
+  margin: 0;
+  font-family: var(--font-caption);
+  font-weight: 300;
+  font-size: calc(var(--font-size));
+  font-variation-settings: "MONO" 1, "slnt" 0;
+  line-height: var(--leading);
+  letter-spacing: 0;
+  color: var(--ink-1);
+  text-wrap: pretty;
+}
+
+.links {
+  margin-top: calc(var(--font-size) * var(--leading) * 3);
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+a:hover {
+  opacity: 0.55;
+}
+
+a:active {
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a {
+    transition: none;
+  }
+}
