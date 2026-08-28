@@ -39,6 +39,7 @@
 
     --fit-height: calc(100dvh - var(--pad-top) - var(--pad-bottom));
     --caption-offset: 4em;
+    --optical-nudge: 2rem;
     --project-gap: calc((var(--pad-top) + var(--pad-bottom)) * 1.8);
 }
 
@@ -56,6 +57,7 @@
         --mobile-scale: 1.18;
         --mobile-padding-offset: 1.53;
         --section-title-top: 7.9rem;
+        --optical-nudge: 0rem;
     }
 }
 
@@ -782,6 +784,7 @@ html:has(dialog[open]) {
         transition: none;
     }
 }
+
 .archive-heading {
     position: sticky;
     top: var(--section-title-top);
@@ -794,6 +797,10 @@ html:has(dialog[open]) {
     pointer-events: none;
 }
 
+#profile .page-content {
+    padding-inline: calc((var(--pad-left) + var(--pad-right)) / 2);
+}
+
 .profile-center {
     display: flex;
     align-items: center;
@@ -803,7 +810,9 @@ html:has(dialog[open]) {
 }
 
 .profile-text {
-    max-width: 34rem;
-    text-align: center;
+    width: 30rem;
+    max-width: 100%;
+    margin-left: var(--optical-nudge);
+    text-align: left;
     text-wrap: pretty;
 }
