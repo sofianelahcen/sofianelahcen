@@ -36,14 +36,21 @@ type RawSettings = {
 const sized = (url: string, width: number) =>
   `${url}?w=${width}&q=80&auto=format`;
 
-const toMedia = (raw: RawMedia, width = FULL_WIDTH): Media => ({
+const toMedia = (
+  raw: RawMedia,
+  width = FULL_WIDTH,
+  fallbackAlt = "",
+): Media => ({
   src: raw._type === "videoItem" ? raw.url : sized(raw.url, width),
   width: raw.width,
   height: raw.height,
   kind: raw._type === "videoItem" ? "video" : "image",
   ...(raw.posterUrl ? { poster: sized(raw.posterUrl, width) } : {}),
-  alt: raw.alt ?? "",
+  alt: raw.alt?.trim() || fallbackAlt,
 });
+
+const describe = (project: RawProject, index: number) =>
+  index === 0 ? project.title : `${project.title} — ${index + 1}`;
 
 const toCredits = (lines?: string[] | null): Credit[] =>
   (lines ?? []).map((name) => ({ name }));
@@ -51,7 +58,7 @@ const toCredits = (lines?: string[] | null): Credit[] =>
 const toSlides = (project: RawProject): Slide[] => {
   const credits = toCredits(project.credits);
   return (project.media ?? []).map((raw, index) => ({
-    media: toMedia(raw),
+    media: toMedia(raw, FULL_WIDTH, describe(project, index)),
     ...(index === 0
       ? { title: project.title, credits: credits.length ? credits : undefined }
       : {}),
@@ -106,8 +113,10 @@ export async function getSiteContent(): Promise<SiteContent> {
         title: project.title,
         year: project.year ?? "",
         credits: toCredits(project.credits),
-        items: (project.media ?? []).map((raw) => toMedia(raw)),
-        cover: toMedia((project.media ?? [])[0], THUMB_WIDTH),
+        items: (project.media ?? []).map((raw, index) =>
+          toMedia(raw, FULL_WIDTH, describe(project, index)),
+        ),
+        cover: toMedia((project.media ?? [])[0], THUMB_WIDTH, project.title),
       })),
   };
 }

@@ -32,7 +32,7 @@ export function ArchiveGallery({ projects }: { projects: ArchiveProject[] }) {
                     <Image
                       className="media-fill"
                       src={cover.src}
-                      alt=""
+                      alt={cover.alt}
                       fill
                       sizes="(max-aspect-ratio: 4/5) 100vw, 20vw"
                     />

@@ -1,6 +1,7 @@
 import { ColumnSet, ColumnUnit, Lines, Page } from "@/components/Layout";
 import { ArchiveGallery } from "@/components/ArchiveGallery";
 import { Slideshow } from "@/components/Slideshow";
+import { StructuredData } from "@/components/StructuredData";
 import { getSiteContent, type SiteContent } from "@/lib/site-data";
 
 type Nav = SiteContent["nav"];
@@ -8,8 +9,12 @@ type Profile = SiteContent["profile"];
 
 function TopNav({ nav }: { nav: Nav }) {
   return (
-    <Page id="top-nav" pinned="top" zIndex={399} className="nav-desktop">
-      <ColumnSet columns="1fr 1fr" gutter="2rem" stackOnMobile={false}>
+    <Page id="top-nav" pinned="top" zIndex={399}>
+      <ColumnSet
+        columns="var(--nav-columns)"
+        gutter="2rem"
+        stackOnMobile={false}
+      >
         <ColumnUnit>
           <h1>
             <a href="#project-001">
@@ -25,32 +30,15 @@ function TopNav({ nav }: { nav: Nav }) {
   );
 }
 
-function TopNavMobile({ nav }: { nav: Nav }) {
-  return (
-    <Page id="top-nav-mobile" pinned="top" zIndex={390} className="nav-mobile">
-      <ColumnSet columns="9fr 3fr" gutter="2rem" stackOnMobile={false}>
-        <ColumnUnit>
-          <h1>
-            <a href="#project-001">{nav.title}</a>
-            <br />
-            {nav.tagline}
-          </h1>
-        </ColumnUnit>
-        <ColumnUnit />
-      </ColumnSet>
-    </Page>
-  );
-}
-
 function MiddleNav({ nav }: { nav: Nav }) {
   return (
     <Page id="middle-nav" pinned="top" zIndex={398} className="nav-desktop">
       <ColumnSet columns="1fr 1fr" gutter="2rem" stackOnMobile={false}>
         <ColumnUnit>
           <Lines count={5} />
-          <h1 style={{ lineHeight: 1.7 }}>
+          <h2 className="section-label">
             <a href="#project-001">{nav.section}</a>
-          </h1>
+          </h2>
         </ColumnUnit>
         <ColumnUnit />
       </ColumnSet>
@@ -61,20 +49,20 @@ function MiddleNav({ nav }: { nav: Nav }) {
 function BottomNav({ nav }: { nav: Nav }) {
   return (
     <Page id="bottom-nav" pinned="bottom" zIndex={391}>
-      <ColumnSet columns="1fr 1fr" gutter="2rem" stackOnMobile={false}>
-        <ColumnUnit>
-          <h1>
-            <a href="#profile">{nav.contact}</a>
-          </h1>
-        </ColumnUnit>
-        <ColumnUnit>
-          <div style={{ textAlign: "right" }}>
-            <h1>
+      <nav aria-label="Sections">
+        <ColumnSet columns="1fr 1fr" gutter="2rem" stackOnMobile={false}>
+          <ColumnUnit>
+            <p className="nav-link">
+              <a href="#profile">{nav.contact}</a>
+            </p>
+          </ColumnUnit>
+          <ColumnUnit>
+            <p className="nav-link nav-link-end">
               <a href="#archive">{nav.archive}</a>
-            </h1>
-          </div>
-        </ColumnUnit>
-      </ColumnSet>
+            </p>
+          </ColumnUnit>
+        </ColumnSet>
+      </nav>
     </Page>
   );
 }
@@ -104,8 +92,8 @@ export default async function Home() {
 
   return (
     <div className="stack">
+      <StructuredData profile={profile} archive={archive} />
       <TopNav nav={nav} />
-      <TopNavMobile nav={nav} />
       <MiddleNav nav={nav} />
 
       <main className="pages">
@@ -118,7 +106,7 @@ export default async function Home() {
         <Profile profile={profile} />
 
         <Page id="archive">
-          <h1 className="archive-heading">{nav.archive}</h1>
+          <h2 className="archive-heading">{nav.archive}</h2>
           <ArchiveGallery projects={archive} />
           <Lines count={13} />
         </Page>

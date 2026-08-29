@@ -17,6 +17,7 @@
 
 :root {
     --section-title-top: 11rem;
+    --nav-columns: 1fr 1fr;
     --viewport-ratio: 1;
     --portrait-bias: 0;
     --weight-base: 9;
@@ -57,6 +58,7 @@
         --mobile-scale: 1.18;
         --mobile-padding-offset: 1.53;
         --section-title-top: 7.9rem;
+        --nav-columns: 9fr 3fr;
         --optical-nudge: 0rem;
     }
 }
@@ -136,6 +138,26 @@ h1 {
     letter-spacing: 0;
     color: var(--color-ink-2);
     contain: layout;
+}
+
+h2,
+.nav-link {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: calc(var(--font-scale) * var(--font-size));
+    line-height: var(--leading);
+    letter-spacing: 0;
+    color: var(--color-ink-2);
+    contain: layout;
+}
+
+.section-label {
+    line-height: 1.7;
+}
+
+.nav-link-end {
+    text-align: right;
 }
 
 .bodycopy {
