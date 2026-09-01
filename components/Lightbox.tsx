@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { useMountEffect } from "@/hooks/useMountEffect";
 import { aspectOf, type Media } from "@/lib/media";
 import { useVideoAspect, VideoFill } from "./VideoFill";
+import { MediaCursor, useMediaCursor } from "./MediaCursor";
 import type { Credit } from "@/lib/content";
 import type { CSSProperties } from "react";
 
@@ -15,11 +16,16 @@ function LightboxFigure({
   item,
   showZones,
   onStep,
+  current,
+  total,
 }: {
   item: Media;
   showZones: boolean;
   onStep: (delta: number) => void;
+  current: number;
+  total: number;
 }) {
+  const cursor = useMediaCursor();
   const video = useVideoAspect(item);
   const aspect = item.kind === "video" ? video.aspect : aspectOf(item);
 
@@ -29,6 +35,7 @@ function LightboxFigure({
         item.kind === "video" ? "lightbox-figure has-controls" : "lightbox-figure"
       }
       style={{ "--aspect": aspect } as CSSProperties}
+      onMouseMove={showZones ? cursor.onMouseMove : undefined}
     >
       {item.kind === "video" ? (
         <VideoFill
@@ -49,6 +56,11 @@ function LightboxFigure({
 
       {showZones ? (
         <>
+          <MediaCursor
+            cursorRef={cursor.ref}
+            current={current}
+            total={total}
+          />
           <button
             type="button"
             className="zone zone-prev lightbox-zone"
@@ -141,6 +153,8 @@ export function Lightbox({
             item={item}
             showZones={total > 1}
             onStep={step}
+            current={index + 1}
+            total={total}
           />
         </div>
 
