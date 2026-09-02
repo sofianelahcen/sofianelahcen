@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { MediaItem } from "./MediaItem";
-import { MediaCursor, useMediaCursor } from "./MediaCursor";
 import { countLabel } from "@/lib/plural";
 import { aspectOf } from "@/lib/media";
 import type { Slide } from "@/lib/content";
@@ -44,7 +43,6 @@ export function Slideshow({
   const activeSlide = slides[active];
   const caption = slides.find((slide) => slide.title || slide.credits);
 
-  const cursor = useMediaCursor();
   const swipeOrigin = useRef<number | null>(null);
   const didSwipe = useRef(false);
 
@@ -115,12 +113,7 @@ export function Slideshow({
         </div>
 
         {total > 1 ? (
-          <div className="slideshow-zones" onMouseMove={cursor.onMouseMove}>
-            <MediaCursor
-              cursorRef={cursor.ref}
-              current={active + 1}
-              total={total}
-            />
+          <div className="slideshow-zones">
             <button
               type="button"
               className="zone zone-prev"
