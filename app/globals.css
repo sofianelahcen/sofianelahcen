@@ -31,6 +31,7 @@
 
     --font-size: 0.9rem;
     --font-scale: 1;
+    --display-scale: 0.92;
     --leading: 1.2;
 
     --pad-top: calc(3.1rem * var(--mobile-padding-offset));
@@ -92,7 +93,7 @@ body {
     color: var(--color-ink-1);
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: calc(var(--font-scale) * var(--font-size));
+    font-size: calc(var(--font-scale) * var(--display-scale) * var(--font-size));
     line-height: var(--leading);
     letter-spacing: 0;
     text-rendering: optimizeLegibility;
@@ -133,7 +134,7 @@ h1 {
     margin: 0;
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: calc(var(--font-scale) * var(--font-size));
+    font-size: calc(var(--font-scale) * var(--display-scale) * var(--font-size));
     line-height: var(--leading);
     letter-spacing: 0;
     color: var(--color-ink-2);
@@ -145,7 +146,7 @@ h2,
     margin: 0;
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: calc(var(--font-scale) * var(--font-size));
+    font-size: calc(var(--font-scale) * var(--display-scale) * var(--font-size));
     line-height: var(--leading);
     letter-spacing: 0;
     color: var(--color-ink-2);
@@ -611,7 +612,7 @@ html:has(dialog[open]) {
     background: transparent;
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: calc(var(--font-scale) * var(--font-size));
+    font-size: calc(var(--font-scale) * var(--display-scale) * var(--font-size));
     line-height: var(--leading);
     color: var(--color-ink-2);
     cursor: pointer;
