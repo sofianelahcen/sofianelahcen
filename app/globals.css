@@ -34,7 +34,7 @@
     --display-scale: 0.86;
     --leading: 1.2;
 
-    --pad-top: calc(3.1rem * var(--mobile-padding-offset));
+    --pad-top: calc(2.2rem * var(--mobile-padding-offset));
     --pad-right: calc(1.5rem * var(--mobile-padding-offset));
     --pad-bottom: calc(2.2rem * var(--mobile-padding-offset));
     --pad-left: calc(1.7rem * var(--mobile-padding-offset));
